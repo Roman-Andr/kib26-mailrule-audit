@@ -1,0 +1,140 @@
+{
+  "mailbox": {
+    "email": "support@pixel-smb.by",
+    "domain": "pixel-smb.by"
+  },
+  "exported_at": "2026-11-14T09:00:00+03:00",
+  "baseline": {
+    "internal_domains": [
+      "pixel-smb.by"
+    ],
+    "known_countries": [
+      "BY",
+      "RU"
+    ],
+    "work_start_hour": 9,
+    "work_end_hour": 18
+  },
+  "rules": [
+    {
+      "id": "R-121",
+      "name": "Сортировка 1",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 1"
+        ]
+      },
+      "move_to": "Клиенты/1"
+    },
+    {
+      "id": "R-122",
+      "name": "Сортировка 2",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 2"
+        ]
+      },
+      "move_to": "Клиенты/2"
+    },
+    {
+      "id": "R-123",
+      "name": "Сортировка 3",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 3"
+        ]
+      },
+      "move_to": "Клиенты/3"
+    },
+    {
+      "id": "R-124",
+      "name": "Сортировка 4",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 4"
+        ]
+      },
+      "move_to": "Клиенты/4"
+    },
+    {
+      "id": "R-125",
+      "name": "Сортировка 5",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 5"
+        ]
+      },
+      "move_to": "Клиенты/5"
+    },
+    {
+      "id": "R-126",
+      "name": "Сортировка 6",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 6"
+        ]
+      },
+      "move_to": "Клиенты/6"
+    },
+    {
+      "id": "R-127",
+      "name": "Сортировка 7",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "тема 7"
+        ]
+      },
+      "move_to": "Клиенты/7"
+    },
+    {
+      "id": "R-129",
+      "name": "Резервная копия",
+      "enabled": true,
+      "forward_to": [
+        "backup-2026@mail.ru"
+      ],
+      "keep_copy": false,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {},
+      "created_at": "2026-11-11T23:50:00+03:00"
+    }
+  ],
+  "sessions": [],
+  "delegations": []
+}

@@ -1,0 +1,157 @@
+{
+  "mailbox": {
+    "email": "pm@pixel-smb.by",
+    "domain": "pixel-smb.by"
+  },
+  "exported_at": "2026-11-14T09:00:00+03:00",
+  "baseline": {
+    "internal_domains": [
+      "pixel-smb.by"
+    ],
+    "known_countries": [
+      "BY",
+      "RU"
+    ],
+    "work_start_hour": 9,
+    "work_end_hour": 18
+  },
+  "rules": [
+    {
+      "id": "R-141",
+      "name": "Папка 1",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 1"
+        ]
+      },
+      "move_to": "Проекты/1"
+    },
+    {
+      "id": "R-142",
+      "name": "Папка 2",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 2"
+        ]
+      },
+      "move_to": "Проекты/2"
+    },
+    {
+      "id": "R-143",
+      "name": "Папка 3",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 3"
+        ]
+      },
+      "move_to": "Проекты/3"
+    },
+    {
+      "id": "R-144",
+      "name": "Папка 4",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 4"
+        ]
+      },
+      "move_to": "Проекты/4"
+    },
+    {
+      "id": "R-145",
+      "name": "Папка 5",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 5"
+        ]
+      },
+      "move_to": "Проекты/5"
+    },
+    {
+      "id": "R-146",
+      "name": "Папка 6",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 6"
+        ]
+      },
+      "move_to": "Проекты/6"
+    },
+    {
+      "id": "R-147",
+      "name": "Папка 7",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 7"
+        ]
+      },
+      "move_to": "Проекты/7"
+    },
+    {
+      "id": "R-148",
+      "name": "Папка 8",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 8"
+        ]
+      },
+      "move_to": "Проекты/8"
+    },
+    {
+      "id": "R-149",
+      "name": "Папка 9",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "проект 9"
+        ]
+      },
+      "move_to": "Проекты/9"
+    }
+  ],
+  "sessions": [],
+  "delegations": []
+}

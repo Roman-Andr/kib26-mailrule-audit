@@ -1,0 +1,46 @@
+{
+  "mailbox": {
+    "email": "manager@pixel-smb.by",
+    "domain": "pixel-smb.by"
+  },
+  "exported_at": "2026-11-14T09:00:00+03:00",
+  "baseline": {
+    "internal_domains": [
+      "pixel-smb.by"
+    ],
+    "known_countries": [
+      "BY",
+      "RU"
+    ],
+    "work_start_hour": 9,
+    "work_end_hour": 18
+  },
+  "rules": [
+    {
+      "id": "R-107",
+      "name": "Сортировка рассылок",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": true,
+      "delete_after": false,
+      "conditions": {},
+      "move_to": "Рассылки"
+    },
+    {
+      "id": "R-108",
+      "name": "Копия входящих",
+      "enabled": true,
+      "forward_to": [
+        "collect2026@yandex.ru"
+      ],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {},
+      "created_at": "2026-11-07T09:30:00+03:00"
+    }
+  ],
+  "sessions": [],
+  "delegations": []
+}

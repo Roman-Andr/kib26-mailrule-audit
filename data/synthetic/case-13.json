@@ -1,0 +1,59 @@
+{
+  "mailbox": {
+    "email": "sales@pixel-smb.by",
+    "domain": "pixel-smb.by"
+  },
+  "exported_at": "2026-11-14T09:00:00+03:00",
+  "baseline": {
+    "internal_domains": [
+      "pixel-smb.by"
+    ],
+    "known_countries": [
+      "BY",
+      "RU"
+    ],
+    "work_start_hour": 9,
+    "work_end_hour": 18
+  },
+  "rules": [
+    {
+      "id": "R-130",
+      "name": "Автоответ",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "новый запрос"
+        ]
+      }
+    },
+    {
+      "id": "R-131",
+      "name": "Рассылки",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": true,
+      "delete_after": false,
+      "conditions": {
+        "from": [
+          "*@news.example"
+        ]
+      },
+      "move_to": "Рассылки"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "S-905",
+      "started_at": "2026-11-12T10:00:00+03:00",
+      "country": "BY",
+      "ip": "10.36.5.7",
+      "mfa": true
+    }
+  ],
+  "delegations": []
+}

@@ -1,0 +1,82 @@
+{
+  "case-01": {
+    "expected": "compromised",
+    "note": "внешняя пересылка из ночной сессии без MFA"
+  },
+  "case-02": {
+    "expected": "compromised",
+    "note": "forward-and-delete на mail.ru"
+  },
+  "case-03": {
+    "expected": "compromised",
+    "note": "сокрытие в папке «Удаленные/RSS» с финансовыми словами"
+  },
+  "case-04": {
+    "expected": "compromised",
+    "note": "пересылка платёжных уведомлений"
+  },
+  "case-05": {
+    "expected": "compromised",
+    "note": "скрытие счетов в пользовательской папке"
+  },
+  "case-06": {
+    "expected": "compromised",
+    "note": "полный доступ к ящику для внешнего адреса"
+  },
+  "case-07": {
+    "expected": "compromised",
+    "note": "внешняя пересылка рядом с обычной сортировкой"
+  },
+  "case-08": {
+    "expected": "compromised",
+    "note": "правило создано в 02:40 и пересылает наружу"
+  },
+  "case-09": {
+    "expected": "compromised",
+    "note": "сессия из Бразилии без MFA"
+  },
+  "case-10": {
+    "expected": "compromised",
+    "note": "банковские слова, пересылка, без копии"
+  },
+  "case-11": {
+    "expected": "compromised",
+    "note": "внешнее делегирование и скрытая папка"
+  },
+  "case-12": {
+    "expected": "compromised",
+    "note": "одно вредоносное правило в длинном списке"
+  },
+  "case-13": {
+    "expected": "clean",
+    "note": "автоответ и сортировка рассылок"
+  },
+  "case-14": {
+    "expected": "clean",
+    "note": "пересылка внутри компании"
+  },
+  "case-15": {
+    "expected": "clean",
+    "note": "правило создано вечером администратором"
+  },
+  "case-16": {
+    "expected": "clean",
+    "note": "делегирование коллеге внутри компании"
+  },
+  "case-17": {
+    "expected": "clean",
+    "note": "фильтр по счетам без пересылки и перемещения"
+  },
+  "case-18": {
+    "expected": "clean",
+    "note": "зарубежная сессия с MFA"
+  },
+  "case-19": {
+    "expected": "clean",
+    "note": "большая легитимная конфигурация"
+  },
+  "case-20": {
+    "expected": "clean",
+    "note": "пустая конфигурация"
+  }
+}

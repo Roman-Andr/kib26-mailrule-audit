@@ -1,0 +1,43 @@
+{
+  "mailbox": {
+    "email": "director@pixel-smb.by",
+    "domain": "pixel-smb.by"
+  },
+  "exported_at": "2026-11-14T09:00:00+03:00",
+  "baseline": {
+    "internal_domains": [
+      "pixel-smb.by"
+    ],
+    "known_countries": [
+      "BY",
+      "RU"
+    ],
+    "work_start_hour": 9,
+    "work_end_hour": 18
+  },
+  "rules": [
+    {
+      "id": "R-134",
+      "name": "Важное",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": false,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "договор"
+        ]
+      },
+      "move_to": "Важное"
+    }
+  ],
+  "sessions": [],
+  "delegations": [
+    {
+      "id": "D-603",
+      "grantee": "assistant@pixel-smb.by",
+      "level": "read"
+    }
+  ]
+}

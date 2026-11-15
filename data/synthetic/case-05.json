@@ -1,0 +1,39 @@
+{
+  "mailbox": {
+    "email": "bookkeeper@pixel-smb.by",
+    "domain": "pixel-smb.by"
+  },
+  "exported_at": "2026-11-14T09:00:00+03:00",
+  "baseline": {
+    "internal_domains": [
+      "pixel-smb.by"
+    ],
+    "known_countries": [
+      "BY",
+      "RU"
+    ],
+    "work_start_hour": 9,
+    "work_end_hour": 18
+  },
+  "rules": [
+    {
+      "id": "R-105",
+      "name": "Документы",
+      "enabled": true,
+      "forward_to": [],
+      "keep_copy": true,
+      "mark_as_read": true,
+      "delete_after": false,
+      "conditions": {
+        "subject_contains": [
+          "счет на оплату",
+          "invoice"
+        ]
+      },
+      "move_to": "Отчеты/2026",
+      "created_at": "2026-11-06T16:40:00+03:00"
+    }
+  ],
+  "sessions": [],
+  "delegations": []
+}
