@@ -15,8 +15,9 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections.abc import Iterable, Mapping
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any
 
 EXPORTED_AT_PLACEHOLDER = "1970-01-01T00:00:00+00:00"
 

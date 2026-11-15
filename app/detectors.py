@@ -8,7 +8,7 @@ texts are resolved later from :mod:`app.i18n` by ``detector_id``.
 
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 
 from .model import (
     FINANCE_KEYWORDS,
@@ -19,7 +19,7 @@ from .model import (
     Mailbox,
     Rule,
 )
-from .parser import local_hour, split_email, weekday
+from .parser import ValidationError, local_hour, split_email, weekday
 
 RuleDetector = Callable[[Mailbox, Rule], "Finding | None"]
 
@@ -27,7 +27,7 @@ RuleDetector = Callable[[Mailbox, Rule], "Finding | None"]
 def _domain_of(address: str) -> str:
     try:
         return split_email(address)[1]
-    except Exception:  # pragma: no cover - parser already validates addresses
+    except ValidationError:  # pragma: no cover - parser validates addresses first
         return address.rsplit("@", 1)[-1].lower()
 
 

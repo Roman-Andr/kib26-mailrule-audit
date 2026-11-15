@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from app import detectors, i18n
@@ -34,8 +36,7 @@ def test_every_detector_has_both_languages() -> None:
 
 
 def test_detector_ids_match_the_code() -> None:
-    source = detectors.__file__
-    text = open(source, encoding="utf-8").read()
+    text = Path(detectors.__file__).read_text(encoding="utf-8")
     for detector_id in i18n.DETECTORS:
         assert f'"{detector_id}"' in text, detector_id
 

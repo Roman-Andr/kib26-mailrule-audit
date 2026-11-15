@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from app.parser import load_export
+from app.parser import ValidationError, load_export
 from app.report import render_markdown
 from app.scoring import audit
 from tests.conftest import DATA
@@ -66,5 +66,5 @@ def test_rule_name_with_markup_is_neutralised() -> None:
 
 
 def test_directory_instead_of_file_is_rejected(tmp_path) -> None:
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         load_export(tmp_path)

@@ -7,9 +7,9 @@ reporting. Nothing here performs I/O or network access.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Mapping
 
 MAX_RULES = 500
 MAX_SESSIONS = 2000

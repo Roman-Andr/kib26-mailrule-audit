@@ -10,9 +10,10 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Mapping, Sequence
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any
 
 from .model import (
     MAX_DELEGATIONS,

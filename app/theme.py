@@ -304,7 +304,7 @@ def system_theme() -> str:
     """Return the theme Streamlit itself is using for this viewer."""
     try:
         theme = st.context.theme
-    except Exception:  # pragma: no cover - context is optional outside a run
+    except Exception:  # noqa: BLE001 - any Streamlit internals may break here
         return "light"
     value = getattr(theme, "type", None)
     if value is None and isinstance(theme, dict):

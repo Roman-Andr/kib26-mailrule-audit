@@ -1,0 +1,12 @@
+# Ruff's default rule set grows with every release, so it is pinned here:
+# "ruff check" has to mean the same thing on the reviewer's machine, in CI and
+# locally. E4/E7/E9/F are the classic pyflakes and pycodestyle essentials,
+# UP keeps the code Python 3.11 modern, B and SIM catch real mistakes.
+target-version = "py311"
+line-length = 100
+
+# RUF00x flags Cyrillic letters that "look like" Latin ones: every Russian
+# string in this project would trip it, so those three rules are off.
+[lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B", "BLE", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]

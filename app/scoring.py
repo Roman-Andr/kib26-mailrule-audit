@@ -8,8 +8,8 @@ several compromised rules (an attacker usually leaves more than one).
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from typing import Sequence
+from collections.abc import Sequence
+from datetime import UTC, datetime
 
 from . import detectors
 from .model import AuditReport, Finding, Mailbox, RuleAssessment
@@ -97,7 +97,7 @@ def audit(mailbox: Mailbox, now: datetime | None = None) -> AuditReport:
     return AuditReport(
         mailbox_email=mailbox.email,
         mailbox_domain=mailbox.domain,
-        generated_at=now or datetime.now(timezone.utc),
+        generated_at=now or datetime.now(UTC),
         rules_total=len(mailbox.rules),
         rules_flagged=len(assessments),
         score=score,
