@@ -20,11 +20,11 @@ MEDIUM_THRESHOLD = 30
 RISKY_RULE_THRESHOLD = 40
 
 LEVELS = (
-    (CRITICAL_THRESHOLD, "Критично", "critical"),
-    (HIGH_THRESHOLD, "Высокий риск", "high"),
-    (MEDIUM_THRESHOLD, "Средний риск", "medium"),
-    (1, "Низкий риск", "low"),
-    (0, "Признаков захвата нет", "clean"),
+    (CRITICAL_THRESHOLD, "critical"),
+    (HIGH_THRESHOLD, "high"),
+    (MEDIUM_THRESHOLD, "medium"),
+    (1, "low"),
+    (0, "clean"),
 )
 
 
@@ -46,31 +46,33 @@ def mailbox_score(
     return min(100, base + bonus)
 
 
-def verdict_for(score: int) -> tuple[str, str]:
-    """Map a numeric score to a human verdict and a machine level."""
-    for threshold, title, level in LEVELS:
+def level_for(score: int) -> str:
+    """Map a numeric score to a machine level."""
+    for threshold, level in LEVELS:
         if score >= threshold:
-            return title, level
-    return LEVELS[-1][1], LEVELS[-1][2]
+            return level
+    return "clean"
 
 
-def _actions(assessments: Sequence[RuleAssessment], mailbox_findings: Sequence[Finding]) -> tuple[str, ...]:
+def _action_keys(
+    assessments: Sequence[RuleAssessment], mailbox_findings: Sequence[Finding]
+) -> tuple[str, ...]:
     detector_ids = {f.detector_id for a in assessments for f in a.findings}
     detector_ids |= {f.detector_id for f in mailbox_findings}
-    actions: list[str] = []
+    keys: list[str] = []
     if "EXT_DELEGATION" in detector_ids:
-        actions.append("Отозвать доступ к ящику, выданный внешнему адресу.")
+        keys.append("revoke_delegation")
     if detector_ids & {"EXT_FORWARD", "FORWARD_NO_COPY"}:
-        actions.append("Отключить правила пересылки и сохранить их описание как доказательство.")
+        keys.append("disable_forwarding")
     if "HIDDEN_FOLDER" in detector_ids:
-        actions.append("Проверить папки, куда переносились письма, и вернуть их во «Входящие».")
+        keys.append("inspect_folders")
     if detector_ids & {"RISKY_SESSION", "OFF_HOURS_RULE"}:
-        actions.append("Сменить пароль, завершить все сессии и включить MFA.")
+        keys.append("reset_credentials")
     if detector_ids & {"FINANCE_TARGET", "EXT_FORWARD", "HIDDEN_FOLDER"}:
-        actions.append("Сверить платежи и реквизиты контрагентов за период действия правил.")
-    if not actions:
-        actions.append("Действий не требуется: подозрительных правил не найдено.")
-    return tuple(actions[:4])
+        keys.append("check_payments")
+    if not keys:
+        keys.append("none")
+    return tuple(keys[:4])
 
 
 def audit(mailbox: Mailbox, now: datetime | None = None) -> AuditReport:
@@ -92,7 +94,6 @@ def audit(mailbox: Mailbox, now: datetime | None = None) -> AuditReport:
         )
     assessments.sort(key=lambda a: (-a.score, a.rule_id))
     score = mailbox_score([a.score for a in assessments], mailbox_findings)
-    verdict, level = verdict_for(score)
     return AuditReport(
         mailbox_email=mailbox.email,
         mailbox_domain=mailbox.domain,
@@ -100,10 +101,9 @@ def audit(mailbox: Mailbox, now: datetime | None = None) -> AuditReport:
         rules_total=len(mailbox.rules),
         rules_flagged=len(assessments),
         score=score,
-        verdict=verdict,
-        level=level,
+        level=level_for(score),
         assessments=tuple(assessments),
         mailbox_findings=tuple(mailbox_findings),
-        actions=_actions(assessments, mailbox_findings),
+        action_keys=_action_keys(assessments, mailbox_findings),
         source=mailbox.source,
     )

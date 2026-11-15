@@ -11,9 +11,9 @@ from app.scoring import (
     HIGH_THRESHOLD,
     MEDIUM_THRESHOLD,
     audit,
+    level_for,
     mailbox_score,
     rule_score,
-    verdict_for,
 )
 from tests.conftest import make_export, make_rule
 
@@ -22,10 +22,7 @@ def finding(weight: int, detector_id: str = "EXT_FORWARD") -> Finding:
     return Finding(
         detector_id=detector_id,
         rule_id="R-1",
-        title="t",
         weight=weight,
-        explanation="e",
-        recommendation="r",
         evidence="ev",
     )
 
@@ -71,7 +68,7 @@ def test_mailbox_findings_participate_in_the_score() -> None:
     ],
 )
 def test_verdict_thresholds(score: int, level: str) -> None:
-    assert verdict_for(score)[1] == level
+    assert level_for(score) == level
 
 
 def test_audit_builds_actions_for_forwarding() -> None:
@@ -81,7 +78,7 @@ def test_audit_builds_actions_for_forwarding() -> None:
     report = audit(mailbox)
     assert report.score == 60
     assert report.level == "high"
-    assert any("пересылк" in action.lower() for action in report.actions)
+    assert "disable_forwarding" in report.action_keys
 
 
 def test_audit_of_clean_mailbox() -> None:
@@ -90,7 +87,7 @@ def test_audit_of_clean_mailbox() -> None:
     assert report.score == 0
     assert report.level == "clean"
     assert report.rules_flagged == 0
-    assert report.actions[0].startswith("Действий не требуется")
+    assert report.action_keys == ("none",)
 
 
 def test_audit_of_seeded_case() -> None:

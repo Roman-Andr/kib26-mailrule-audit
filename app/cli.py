@@ -7,6 +7,7 @@ import json
 import sys
 from pathlib import Path
 
+from .i18n import DEFAULT_LANG, LANGS
 from .parser import ValidationError, load_export
 from .report import render_markdown, to_dict
 from .scoring import audit
@@ -22,6 +23,9 @@ def build_parser() -> argparse.ArgumentParser:
         "--format", choices=("md", "json"), default="md", help="формат отчёта"
     )
     parser.add_argument("--out", help="файл для записи отчёта (по умолчанию stdout)")
+    parser.add_argument(
+        "--lang", choices=LANGS, default=DEFAULT_LANG, help="язык отчёта (ru/en)"
+    )
     parser.add_argument(
         "--check",
         action="store_true",
@@ -40,9 +44,9 @@ def main(argv: list[str] | None = None) -> int:
 
     report = audit(mailbox)
     if args.format == "json":
-        payload = json.dumps(to_dict(report), ensure_ascii=False, indent=2)
+        payload = json.dumps(to_dict(report, args.lang), ensure_ascii=False, indent=2)
     else:
-        payload = render_markdown(report)
+        payload = render_markdown(report, args.lang)
 
     if args.out:
         Path(args.out).write_text(payload + "\n", encoding="utf-8")

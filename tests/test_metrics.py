@@ -63,5 +63,5 @@ def test_every_compromised_case_has_actions() -> None:
         if labels[path.stem]["expected"] != "compromised":
             continue
         report = audit(load_export(path))
-        assert report.actions
-        assert not report.actions[0].startswith("Действий не требуется")
+        assert report.action_keys
+        assert "none" not in report.action_keys

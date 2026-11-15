@@ -53,7 +53,7 @@ def test_converted_export_is_accepted_by_the_parser() -> None:
     assert mailbox.email == "user@gmail.com"
     assert report.rules_total == 2
     assert report.score >= 30
-    assert any("пересылк" in action.lower() for action in report.actions)
+    assert "disable_forwarding" in report.action_keys
 
 
 def test_missing_sessions_are_reported_in_the_export() -> None:

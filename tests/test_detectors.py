@@ -106,7 +106,7 @@ def test_risky_session_without_mfa() -> None:
     )
     finding = detectors.detect_risky_session(mb, mb.rules[0])
     assert finding is not None
-    assert "без MFA" in finding.evidence
+    assert "MFA" in finding.evidence
 
 
 def test_risky_session_from_unknown_country() -> None:

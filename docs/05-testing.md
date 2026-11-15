@@ -9,10 +9,12 @@
 | Модульный | Веса, потолки, бонус за повторную компрометацию, пороги вердикта | `tests/test_scoring.py` (17) |
 | Модульный | Структура отчёта, экранирование, JSON-выгрузка | `tests/test_report.py` (7) |
 | Интеграционный | Прогон 20 синтетических кейсов, точность и время | `tests/test_metrics.py` (24) |
-| Безопасность | Отсутствие сети, отсутствие `eval`, лимиты, инъекции | `tests/test_security.py` (19) |
+| Безопасность | Отсутствие сети, отсутствие `eval`, лимиты, инъекции | `tests/test_security.py` (21) |
 | Импорт | Дамп настроек Gmail превращается в корректный экспорт | `tests/test_gmail_import.py` (5) |
+| Локализация | Русский и английский, один источник строк | `tests/test_i18n.py` (10) |
+| Интерфейс | Страница поднимается, переключаются язык и тема | `tests/test_ui.py` (5) |
 
-Всего: **106 тестов**, все проходят (`pytest -q` → `106 passed`).
+Всего: **123 теста**, все проходят (`pytest -q` → `123 passed`).
 
 ## 2. Набор данных
 
@@ -90,7 +92,7 @@
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 
-pytest -q                       # 106 тестов
+pytest -q                       # 123 теста
 python -m app.cli --input data/synthetic/case-10.json
 python scripts/gen_configs.py   # пересоздать набор
 streamlit run app/ui.py         # веб-интерфейс

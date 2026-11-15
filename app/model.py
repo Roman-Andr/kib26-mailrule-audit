@@ -159,14 +159,16 @@ class Mailbox:
 
 @dataclass(frozen=True)
 class Finding:
-    """One detector hit."""
+    """One detector hit.
+
+    Presentation strings live in :mod:`app.i18n` and are resolved by
+    ``detector_id`` when the report is rendered, so a finding stays language
+    neutral.
+    """
 
     detector_id: str
     rule_id: str
-    title: str
     weight: int
-    explanation: str
-    recommendation: str
     evidence: str
 
 
@@ -190,9 +192,8 @@ class AuditReport:
     rules_total: int
     rules_flagged: int
     score: int
-    verdict: str
     level: str
     assessments: tuple[RuleAssessment, ...]
     mailbox_findings: tuple[Finding, ...]
-    actions: tuple[str, ...]
+    action_keys: tuple[str, ...]
     source: str = ""

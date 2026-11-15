@@ -2,7 +2,8 @@
 
 Each detector is a pure function ``(mailbox, rule) -> Finding | None``.
 The detectors never raise on valid data and never perform I/O, which keeps
-them trivially testable and safe to run inside a web request.
+them trivially testable and safe to run inside a web request. Human-readable
+texts are resolved later from :mod:`app.i18n` by ``detector_id``.
 """
 
 from __future__ import annotations
@@ -23,7 +24,7 @@ from .parser import local_hour, split_email, weekday
 RuleDetector = Callable[[Mailbox, Rule], "Finding | None"]
 
 
-def _domains(address: str) -> str:
+def _domain_of(address: str) -> str:
     try:
         return split_email(address)[1]
     except Exception:  # pragma: no cover - parser already validates addresses
@@ -32,7 +33,7 @@ def _domains(address: str) -> str:
 
 def is_external(address: str, mailbox: Mailbox) -> bool:
     """True when the address belongs to a domain outside the company."""
-    return _domains(address) not in {d.lower() for d in mailbox.baseline.internal_domains}
+    return _domain_of(address) not in {d.lower() for d in mailbox.baseline.internal_domains}
 
 
 def _finance_hits(rule: Rule) -> list[str]:
@@ -66,16 +67,7 @@ def detect_external_forward(mailbox: Mailbox, rule: Rule) -> Finding | None:
     return Finding(
         detector_id="EXT_FORWARD",
         rule_id=rule.rule_id,
-        title="Пересылка на внешний адрес",
         weight=35,
-        explanation=(
-            "Правило отправляет копии писем за пределы компании. Так выглядит "
-            "типовой сбор переписки после захвата ящика."
-        ),
-        recommendation=(
-            "Проверить автора правила, отключить пересылку и сменить пароль "
-            "ящика; проверить, не уходили ли письма за период действия правила."
-        ),
         evidence=", ".join(external),
     )
 
@@ -88,16 +80,7 @@ def detect_forward_without_copy(mailbox: Mailbox, rule: Rule) -> Finding | None:
     return Finding(
         detector_id="FORWARD_NO_COPY",
         rule_id=rule.rule_id,
-        title="Пересылка без сохранения копии",
         weight=25,
-        explanation=(
-            "Письмо пересылается наружу и не остаётся в ящике владельца: "
-            "исчезновение следов переписки — признак сокрытия."
-        ),
-        recommendation=(
-            "Включить сохранение копии или удалить правило; сверить журнал "
-            "отправленных сообщений за период действия."
-        ),
         evidence=f"keep_copy={rule.keep_copy}, delete_after={rule.delete_after}",
     )
 
@@ -105,22 +88,11 @@ def detect_forward_without_copy(mailbox: Mailbox, rule: Rule) -> Finding | None:
 def detect_hidden_folder(mailbox: Mailbox, rule: Rule) -> Finding | None:
     if not _folder_hidden(rule):
         return None
-    folder = rule.move_to or ""
     return Finding(
         detector_id="HIDDEN_FOLDER",
         rule_id=rule.rule_id,
-        title="Сокрытие письма в папке",
         weight=20,
-        explanation=(
-            "Письма переносятся в папку, которую владелец не просматривает, "
-            "часто с отметкой «прочитано». Уведомление о входе и переписка "
-            "с банком пропадают из виду."
-        ),
-        recommendation=(
-            "Вернуть правило в «Входящие» или удалить его; проверить "
-            f"содержимое папки «{folder}»."
-        ),
-        evidence=f"move_to={folder}, mark_as_read={rule.mark_as_read}",
+        evidence=f"move_to={rule.move_to}, mark_as_read={rule.mark_as_read}",
     )
 
 
@@ -133,17 +105,7 @@ def detect_finance_target(mailbox: Mailbox, rule: Rule) -> Finding | None:
     return Finding(
         detector_id="FINANCE_TARGET",
         rule_id=rule.rule_id,
-        title="Фильтр по финансовым ключевым словам",
         weight=15,
-        explanation=(
-            "Правило нацелено на письма о платежах, счетах и договорах: "
-            "именно их нужно скрыть, чтобы компания не заметила подготовку "
-            "мошеннического перевода."
-        ),
-        recommendation=(
-            "Удалить правило и проверить, не менялись ли реквизиты "
-            "контрагентов в переписке за период его действия."
-        ),
         evidence=", ".join(hits),
     )
 
@@ -158,17 +120,7 @@ def detect_off_hours_rule(mailbox: Mailbox, rule: Rule) -> Finding | None:
     return Finding(
         detector_id="OFF_HOURS_RULE",
         rule_id=rule.rule_id,
-        title="Правило создано в нерабочее время",
         weight=10,
-        explanation=(
-            "Правило появилось вне рабочих часов или в выходной. Само по себе "
-            "это не нарушение, но вместе с пересылкой или сокрытием указывает "
-            "на действия злоумышленника."
-        ),
-        recommendation=(
-            "Уточнить у автора правила, когда и зачем оно создавалось; "
-            "сверить с историей входов в ящик."
-        ),
         evidence=moment.isoformat(timespec="minutes"),
     )
 
@@ -184,22 +136,13 @@ def detect_risky_session(mailbox: Mailbox, rule: Rule) -> Finding | None:
         return None
     reasons = []
     if not session.mfa:
-        reasons.append("вход без MFA")
+        reasons.append("MFA: нет")
     if foreign:
-        reasons.append(f"страна входа {session.country}")
+        reasons.append(f"country={session.country}")
     return Finding(
         detector_id="RISKY_SESSION",
         rule_id=rule.rule_id,
-        title="Правило создано из подозрительной сессии",
         weight=15,
-        explanation=(
-            "Правило появилось в сессии, которая не похожа на обычную работу "
-            "сотрудника."
-        ),
-        recommendation=(
-            "Завершить все сессии ящика, включить MFA, проверить журнал "
-            "входов за последние 30 дней."
-        ),
         evidence=", ".join(reasons),
     )
 
@@ -210,16 +153,7 @@ def detect_external_delegation(mailbox: Mailbox, delegation: Delegation) -> Find
     return Finding(
         detector_id="EXT_DELEGATION",
         rule_id=delegation.delegation_id,
-        title="Доступ к ящику выдан внешнему адресу",
         weight=30,
-        explanation=(
-            "Ящик открыт постороннему адресу. Такой доступ не требует правил "
-            "пересылки: злоумышленник читает переписку напрямую."
-        ),
-        recommendation=(
-            "Отозвать доступ, сменить пароль, проверить, какие письма "
-            "открывались с этого адреса."
-        ),
         evidence=f"{delegation.grantee} ({delegation.level})",
     )
 
