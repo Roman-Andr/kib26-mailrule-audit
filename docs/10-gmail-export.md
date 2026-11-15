@@ -154,5 +154,5 @@ Get-MailboxPermission user@firma.ru | Where-Object { $_.User -notlike "NT AUTHOR
 ```bash
 python -m app.cli --input data/real/my-mailbox.json            # отчёт в терминал
 python -m app.cli --input data/real/my-mailbox.json --format json --out /tmp/r.json
-pytest -q                                                        # 123 теста, движок не сломан
+pytest -q                                                        # 142 теста, движок не сломан
 ```

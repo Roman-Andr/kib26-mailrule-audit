@@ -14,7 +14,7 @@
 | Локализация | Русский и английский, один источник строк | `tests/test_i18n.py` (10) |
 | Интерфейс | Страница поднимается, переключаются язык и тема | `tests/test_ui.py` (5) |
 
-Всего: **123 теста**, все проходят (`pytest -q` → `123 passed`).
+Всего: **142 теста**, все проходят (`pytest -q` → `142 passed`).
 
 ## 2. Набор данных
 
@@ -92,7 +92,7 @@
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 
-pytest -q                       # 123 теста
+pytest -q                       # 142 теста
 python -m app.cli --input data/synthetic/case-10.json
 python scripts/gen_configs.py   # пересоздать набор
 streamlit run app/ui.py         # веб-интерфейс
