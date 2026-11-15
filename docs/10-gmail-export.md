@@ -95,6 +95,7 @@ python -m app.cli --input data/real/kib26-export-2026-11-15.json
 | `Cannot read properties of undefined (reading 'list')` | не добавлен сервис Gmail API или вызов идёт к `Settings.Labels` | «Сервисы» → «+» → Gmail API → «Добавить»; в коде должно быть `Gmail.Users.Labels.list('me')` |
 | `Authorization is required to perform that action` | не выданы разрешения | запустить функцию заново и подтвердить доступ в окне согласия |
 | `Google hasn't verified this app` | скрипт ваш собственный, проверка Google не проводилась | «Дополнительные настройки» → «Перейти к проекту (небезопасно)» — это нормально для личного скрипта |
+| `Cannot read properties of null (reading 'filter')` | сервис вернул `null`: фильтров нет либо ответ пустой | обновить скрипт из репозитория (добавлена проверка на `null`) или вручную: `var r = Gmail.Users.Settings.Filters.list('me') \|\| {}; var filters = r.filter \|\| [];` |
 | `Правил выгружено: 0` | в ящике нет фильтров | создать любой фильтр в настройках Gmail и повторить |
 
 ### Если хочется через Gmail API напрямую

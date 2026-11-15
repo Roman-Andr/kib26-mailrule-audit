@@ -25,10 +25,14 @@ function exportMailboxRules() {
 
   var labelNames = {};
   // В Gmail API метки живут в users.labels, а не в users.settings.labels.
-  var labels = Gmail.Users.Labels.list('me').labels || [];
+  // Пустой ответ приходит как null, поэтому проверяем результат перед чтением.
+  var labelsResponse = Gmail.Users.Labels.list('me') || {};
+  var labels = labelsResponse.labels || [];
   labels.forEach(function (label) { labelNames[label.id] = label.name; });
 
-  var filters = Gmail.Users.Settings.Filters.list('me').filter || [];
+  // Если фильтров нет, сервис возвращает null, а не пустой массив.
+  var filtersResponse = Gmail.Users.Settings.Filters.list('me') || {};
+  var filters = filtersResponse.filter || [];
   var rules = filters.map(function (item, index) {
     var criteria = item.criteria || {};
     var action = item.action || {};
@@ -90,6 +94,11 @@ function exportMailboxRules() {
   );
 
   Logger.log('Правил выгружено: %s', rules.length);
+  if (rules.length === 0) {
+    Logger.log('В ящике нет фильтров. Для демонстрации создайте любой фильтр: ' +
+      'Gmail → Настройки → Фильтры → «Создать фильтр» (например, письма от noreply@example.com ' +
+      'с меткой «Тест»), затем запустите скрипт снова.');
+  }
   Logger.log('Файл: %s', file.getUrl());
   Logger.log('Скачайте файл и запустите: python -m app.cli --input kib26-export-%s.json', stamp);
   return file.getUrl();
