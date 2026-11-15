@@ -5,8 +5,11 @@ Run locally with::
     streamlit run app/ui.py
 
 The page never sends the export anywhere: parsing, scoring and rendering all
-happen in the same process. Language and theme are switched in the sidebar;
-the theme is applied with CSS variables so the custom table follows it.
+happen in the same process. Language and theme are switched in the sidebar.
+
+Streamlit itself renders light or dark depending on ``[theme.light]`` and
+``[theme.dark]`` in ``.streamlit/config.toml``; the sidebar switch can force the
+other palette, and :mod:`app.theme` repaints the widgets in that case.
 """
 
 from __future__ import annotations
@@ -23,7 +26,7 @@ if str(ROOT) not in sys.path:
 
 import streamlit as st  # noqa: E402
 
-from app import i18n  # noqa: E402
+from app import i18n, theme  # noqa: E402
 from app.parser import ValidationError, parse_export  # noqa: E402
 from app.report import findings_rows, render_markdown, to_dict  # noqa: E402
 from app.scoring import audit  # noqa: E402
@@ -37,59 +40,6 @@ LEVEL_ICON = {
     "low": "🟦",
     "clean": "🟩",
 }
-
-BASE_CSS = """
-<style>
-.kib-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-.kib-table th, .kib-table td {
-    border: 1px solid var(--kib-border, #d0d7de);
-    padding: 8px 10px; text-align: left; vertical-align: top;
-}
-.kib-table th { background: var(--kib-head, #f3f5f8); font-weight: 600; }
-.kib-badge {
-    display: inline-block; padding: 2px 8px; border-radius: 10px;
-    font-weight: 600; font-size: 0.8rem; color: #fff;
-}
-.kib-badge.p1 { background: #b3261e; }
-.kib-badge.p2 { background: #c25e00; }
-.kib-badge.p3 { background: #8a6d00; }
-.kib-badge.p4 { background: #57606a; }
-</style>
-"""
-
-DARK_CSS = """
-<style>
-.stApp { background-color: #0d1117; color: #e6edf3; }
-section[data-testid="stSidebar"] { background-color: #161b22; }
-section[data-testid="stSidebar"] * { color: #e6edf3; }
-h1, h2, h3, h4, p, li, span, label, div { color: #e6edf3; }
-[data-testid="stMetricValue"] { color: #e6edf3; }
-:root {
-    --kib-border: #30363d; --kib-head: #1c2128;
-}
-a { color: #6cb6ff; }
-</style>
-"""
-
-
-def _system_theme() -> str:
-    """Read the viewer's Streamlit theme, defaulting to light."""
-    try:
-        theme = st.context.theme
-        value = getattr(theme, "type", None)
-        if value is None and isinstance(theme, dict):
-            value = theme.get("type")
-        return "dark" if str(value).lower() == "dark" else "light"
-    except Exception:  # pragma: no cover - context is optional
-        return "light"
-
-
-def _apply_theme(mode: str) -> str:
-    """Inject CSS and return the effective theme name."""
-    effective = _system_theme() if mode == "system" else mode
-    css = BASE_CSS + (DARK_CSS if effective == "dark" else "")
-    st.markdown(css, unsafe_allow_html=True)
-    return effective
 
 
 def _table(rows: list[dict[str, str]], headers: list[tuple[str, str]]) -> str:
@@ -209,7 +159,12 @@ def main() -> None:
         st.markdown(i18n.ui(lang, "how_it_works"))
         st.markdown(i18n.ui(lang, "how_it_works_text"))
 
-    _apply_theme(theme_choice)
+    native_theme = theme.system_theme()
+    active_theme = theme.active_theme(theme_choice, native_theme)
+    st.markdown(
+        theme.css(active_theme, force=active_theme != native_theme),
+        unsafe_allow_html=True,
+    )
 
     st.title(i18n.ui(lang, "app_title"))
     st.caption(i18n.ui(lang, "caption"))

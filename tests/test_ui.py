@@ -34,6 +34,14 @@ def test_theme_switch_keeps_the_app_alive() -> None:
     assert not list(at.exception)
 
 
+def test_theme_choice_repaints_the_widgets() -> None:
+    at = open_app()
+    at.radio[1].set_value("dark").run()
+    css = "".join(markdown.value for markdown in at.markdown)
+    assert "--kib-app: #0d1117" in css
+    assert 'data-testid="stFileUploaderDropzone"' in css
+
+
 def test_case_selection_renders_a_verdict() -> None:
     at = open_app()
     at.selectbox[0].select("case-10.json").run()
