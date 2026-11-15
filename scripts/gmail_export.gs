@@ -13,11 +13,19 @@
  * данные: файл сохраняется в ваш собственный Drive.
  */
 function exportMailboxRules() {
+  if (typeof Gmail === 'undefined' || !Gmail.Users || !Gmail.Users.Settings) {
+    throw new Error(
+      'Не добавлен сервис Gmail API. Слева «Сервисы» → «+» → найдите Gmail API → ' +
+      '«Добавить», сохраните проект и запустите снова.'
+    );
+  }
+
   var email = Session.getActiveUser().getEmail();
   var domain = email.split('@').pop();
 
   var labelNames = {};
-  var labels = Gmail.Users.Settings.Labels.list('me').labels || [];
+  // В Gmail API метки живут в users.labels, а не в users.settings.labels.
+  var labels = Gmail.Users.Labels.list('me').labels || [];
   labels.forEach(function (label) { labelNames[label.id] = label.name; });
 
   var filters = Gmail.Users.Settings.Filters.list('me').filter || [];

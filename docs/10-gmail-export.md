@@ -83,9 +83,19 @@
 python -m app.cli --input data/real/kib26-export-2026-11-15.json
 ```
 
-Скрипт читает фильтры и метки через `Gmail.Users.Settings.Filters.list` и
-`Labels.list`, переводит их в нашу схему и сохраняет JSON в ваш Drive. Данные
-никуда не отправляются.
+Скрипт читает фильтры через `Gmail.Users.Settings.Filters.list` и метки через
+`Gmail.Users.Labels.list` (в Gmail API метки лежат в `users.labels`, а не в
+`users.settings.labels` — на этом легко споткнуться), переводит их в нашу схему и
+сохраняет JSON в ваш Drive. Данные никуда не отправляются.
+
+### Если скрипт упал
+
+| Ошибка | Причина | Что сделать |
+|--------|---------|-------------|
+| `Cannot read properties of undefined (reading 'list')` | не добавлен сервис Gmail API или вызов идёт к `Settings.Labels` | «Сервисы» → «+» → Gmail API → «Добавить»; в коде должно быть `Gmail.Users.Labels.list('me')` |
+| `Authorization is required to perform that action` | не выданы разрешения | запустить функцию заново и подтвердить доступ в окне согласия |
+| `Google hasn't verified this app` | скрипт ваш собственный, проверка Google не проводилась | «Дополнительные настройки» → «Перейти к проекту (небезопасно)» — это нормально для личного скрипта |
+| `Правил выгружено: 0` | в ящике нет фильтров | создать любой фильтр в настройках Gmail и повторить |
 
 ### Если хочется через Gmail API напрямую
 
