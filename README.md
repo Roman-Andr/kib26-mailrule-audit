@@ -104,6 +104,12 @@ registry/             строки для реестра курса
 | `docs/08-prompt-log.md` | журнал промптов |
 | `docs/09-contribution-log.md` | роли, вклад, peer assessment |
 
+## Материалы
+
+- Презентация на 5 слайдов для защиты:
+  https://docs.google.com/presentation/d/1cYEeG1LhfDXHmUzXeGKv9ftvGxEUcSQfNkMH6-dWfDk/edit
+- Строки для реестра курса и текст декларации ИИ: `registry/kib-26-row.md`
+
 ## Команда
 
 | Участник | Роль |
